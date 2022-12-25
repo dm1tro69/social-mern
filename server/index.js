@@ -7,6 +7,8 @@ import morgan from 'morgan'
 import multer from "multer";
 import path from "path";
 import {fileURLToPath} from 'url'
+import {register} from "./controllers/auth.js";
+import authRoutes from "./routes/auth.js";
 
 const app = express()
 
@@ -19,7 +21,7 @@ const __dirname = path.dirname(__filename)
 
 app.use(helmet())
 app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}))
-app.use(express.json)
+app.use(express.json())
 app.use(cors())
 app.use(morgan("common"))
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')))
@@ -34,6 +36,9 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({storage})
+
+app.post('/auth/register', upload.single('picture'), register)
+app.use('/auth', authRoutes)
 
 const start = async () => {
    try {
