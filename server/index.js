@@ -9,6 +9,8 @@ import path from "path";
 import {fileURLToPath} from 'url'
 import {register} from "./controllers/auth.js";
 import authRoutes from "./routes/auth.js";
+import userRouters from "./routes/users.js";
+import postRouters from "./routes/post.js";
 
 const app = express()
 
@@ -39,6 +41,8 @@ const upload = multer({storage})
 
 app.post('/auth/register', upload.single('picture'), register)
 app.use('/auth', authRoutes)
+app.use('/users', userRouters)
+app.use('/posts', postRouters)
 
 const start = async () => {
    try {
